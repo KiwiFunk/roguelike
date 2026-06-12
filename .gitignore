@@ -1,1 +1,12 @@
 practice
+
+# Build output
+build/
+
+# Object files
+*.o
+
+# Executables
+*.exe
+*.out
+roguelike
