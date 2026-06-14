@@ -32,6 +32,7 @@ void game_render(struct game_state *gamestate) {
 
 void game_shutdown(struct game_state *gamestate) {
     free(gamestate);
+    gamestate = NULL;
     printf("Game shutdown successfully\n");
     return;
 }

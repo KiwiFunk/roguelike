@@ -11,20 +11,21 @@ typedef enum {
 // Structures
 struct entity {
     int id;
-    entity_type type;
     int x, y;
     int hp;
+    entity_type type;
 };
 
 struct entity_manager {
-    entity entities[INITIAL_CAPACITY];
-    int count;                          // Track current number of entities
-    int capacity;                       // Track current capacity of array
+    int count;                                  // Track current number of entities
+    int capacity;                               // Track current capacity of array
+    struct entity *entities;                    // Point to start of entity array
 };
 
 // Entity manager functions
 struct entity_manager* init_entity_manager();
-void cleanup_entity_manager(struct entity_manager* manager);
+void add_entity(struct entity_manager* em, struct entity* e);
+void cleanup_entity_manager(struct entity_manager* em);
 
 // Entity functions
 struct entity* create_entity(entity_type type, int x, int y);
