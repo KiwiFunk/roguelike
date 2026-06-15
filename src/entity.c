@@ -72,20 +72,38 @@ void add_entity(struct entity_manager *em, struct entity *e) {
 }
 
 void cleanup_entity_manager(struct entity_manager* em) {
-    if (em) {
-        // Recursively destroy and release memory for all entities in the manager
-        // Then free the entity array
-        // finally the manager itself
-        free(em);
+
+    if(!em) {
+        fprintf(stderr, "Entity manager is NULL, nothing to clean up\n");
+        return;
     }
-    em = NULL; // Avoid dangling pointer
+
+    // Clean up each entity belonging to the entity manager
+    for (int i = 0; i < em->count; i++) {
+        destroy_entity(em->entities[i]);    // Pointers can be called with array notation
+    }
+
+    free(em->entities);         // Free the array of entity pointers
+    free(em);                   // Free the entity manager itself
+    em = NULL;                  // Avoid dangling pointer
 }
 
 // Entity Functions
 
 struct entity* create_entity(entity_type type, int x, int y) {
 
+    struct entity* e = malloc(sizeof(struct entity));
+    if (!e) {
+        fprintf(stderr, "Failed to allocate memory for entity\n");
+        return NULL;
+    }
 
+    e->id = rand(); // Assign random - Change later
+    e->x = x;
+    e->y = y;
+    e->type = type;
+
+    return e;
 }
 
 void destroy_entity(struct entity *e) {
@@ -97,7 +115,8 @@ void destroy_entity(struct entity *e) {
 }
 
 // Convenience Functions
-
-void spawn_entity() {
-
+void spawn_entity(entity_type type, int x, int y, struct entity_manager *em) {
+    struct entity* e = create_entity(type, x, y);   // Store Pointer to new entity
+    add_entity(em, e);                              // Add entity to manager
+    return;
 }
