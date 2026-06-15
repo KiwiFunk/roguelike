@@ -14,7 +14,7 @@ struct entity_manager* init_entity_manager() {
     em->capacity = INITIAL_CAPACITY;
 
     // Allocate memory for entity array and set pointer
-    em->entities = malloc(INITIAL_CAPACITY * sizeof(struct entity));
+    em->entities = malloc(INITIAL_CAPACITY * sizeof(struct entity *));
     // If malloc fails, free em and return NULL
     if (!em->entities) {
         fprintf(stderr, "Failed to allocate memory for entity array\n");
@@ -49,7 +49,7 @@ void add_entity(struct entity_manager *em, struct entity *e) {
         }
 
         // Realloc to a tempory pointer to avoid losing reference to original memory if realloc fails
-        struct entity **temp = realloc(em->entities, new_capacity * sizeof(struct entity));
+        struct entity **temp = realloc(em->entities, new_capacity * sizeof(struct entity *));
 
         // Gracefully handle realloc failure and clean up new enitiy with warning
         if (temp == NULL) {
