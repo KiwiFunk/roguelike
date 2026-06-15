@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include "entity.h"
 
+// Entity Manager Functions
+
 struct entity_manager* init_entity_manager() {
 
     struct entity_manager* em = malloc(sizeof(struct entity_manager));
@@ -79,6 +81,8 @@ void cleanup_entity_manager(struct entity_manager* em) {
     em = NULL; // Avoid dangling pointer
 }
 
+// Entity Functions
+
 struct entity* create_entity(entity_type type, int x, int y) {
 
 
@@ -90,4 +94,10 @@ void destroy_entity(struct entity *e) {
         free(e);
     }
      e = NULL; // Avoid dangling pointer
+}
+
+// Convenience Functions
+
+void spawn_entity() {
+
 }
