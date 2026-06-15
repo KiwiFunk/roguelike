@@ -4,6 +4,23 @@ typedef enum {
     ENTITY_TYPE_ITEM
 } entity_type;
 
+// Compiler should pad to 4 bytes for alignment, try to keep same size
+typedef struct {
+    int hp;
+    int attack_power;
+    int speed;
+} EnemyData;
+
+typedef struct {
+    int heal_amount;
+    bool is_key_item;
+} ItemData;
+
+typedef struct {
+    int max_hp;
+    int mana;
+} PlayerData;
+
 // Macros
 #define MAX_ENTITIES 100                // Cap for maximum entities in memory at once
 #define INITIAL_CAPACITY 10             // Initial size of entity array
@@ -12,14 +29,18 @@ typedef enum {
 struct entity {
     int id;
     int x, y;
-    int hp;
     entity_type type;
+    union {                             // Use union - entity will only use one set per instance
+        EnemyData enemy_data;
+        ItemData item_data;
+        PlayerData player_data;
+    } data;
 };
 
 struct entity_manager {
-    int count;                                  // Track current number of entities
-    int capacity;                               // Track current capacity of array
-    struct entity **entities;                   // Point to dynamically allocated array of entity pointers
+    int count;                          // Track current number of entities
+    int capacity;                       // Track current capacity of array
+    struct entity **entities;           // Point to dynamically allocated array of entity pointers
 };
 
 // Entity manager functions
