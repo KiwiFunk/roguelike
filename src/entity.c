@@ -28,7 +28,7 @@ struct entity_manager* init_entity_manager() {
     return em;
 }
 
-void add_entity(struct entity_manager *em, struct entity *e) {
+static void add_entity(struct entity_manager *em, struct entity *e) {
     // Null checks
     if (em == NULL || e == NULL) {
         fprintf(stderr, "Failed to add entity: Manager or Entity is NULL\n");
@@ -90,7 +90,8 @@ void cleanup_entity_manager(struct entity_manager* em) {
 
 // Entity Functions
 
-struct entity* create_entity(entity_type type, int x, int y) {
+// Internal base function, keep static (private)
+static struct entity* create_entity(entity_type type, int x, int y) {
 
     struct entity* e = malloc(sizeof(struct entity));
     if (!e) {
@@ -106,6 +107,37 @@ struct entity* create_entity(entity_type type, int x, int y) {
     return e;
 }
 
+static struct entity* create_enemy(int x, int y, int hp, int attack_power, int speed) {
+    struct entity* e = create_entity(ENTITY_TYPE_ENEMY, x, y);
+    if (!e) return NULL;
+
+    e->data.enemy_data.hp = hp;
+    e->data.enemy_data.attack_power = attack_power;
+    e->data.enemy_data.speed = speed;
+
+    return e;
+}
+
+static struct entity* create_item(int x, int y, int heal_amount, bool is_key_item) {
+    struct entity* e = create_entity(ENTITY_TYPE_ITEM, x, y);
+    if (!e) return NULL;
+
+    e->data.item_data.heal_amount = heal_amount;
+    e->data.item_data.is_key_item = is_key_item;
+
+    return e;
+}
+
+static struct entity* create_player(int x, int y, int max_hp, int mana) {
+    struct entity* e = create_entity(ENTITY_TYPE_PLAYER, x, y);
+    if (!e) return NULL;
+
+    e->data.player_data.max_hp = max_hp;
+    e->data.player_data.mana = mana;
+
+    return e;
+}
+
 void destroy_entity(struct entity *e) {
     // Destroy entity e and free memory
      if (e) {
@@ -114,9 +146,21 @@ void destroy_entity(struct entity *e) {
      e = NULL; // Avoid dangling pointer
 }
 
-// Convenience Functions
-void spawn_entity(entity_type type, int x, int y, struct entity_manager *em) {
-    struct entity* e = create_entity(type, x, y);   // Store Pointer to new entity
-    add_entity(em, e);                              // Add entity to manager
+// Public Functions
+void spawn_enemy(int x, int y, int hp, int attack_power, int speed, struct entity_manager *em) {
+    struct entity* e = create_enemy(x, y, hp, attack_power, speed);
+    add_entity(em, e);
+    return;
+}
+
+void spawn_item(int x, int y, int heal_amount, bool is_key_item, struct entity_manager *em) {
+    struct entity* e = create_item(x, y, heal_amount, is_key_item);
+    add_entity(em, e);
+    return;
+}
+
+void spawn_player(int x, int y, int max_hp, int mana, struct entity_manager *em) {
+    struct entity* e = create_player(x, y, max_hp, mana);
+    add_entity(em, e);
     return;
 }
