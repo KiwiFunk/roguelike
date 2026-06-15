@@ -49,7 +49,7 @@ void add_entity(struct entity_manager *em, struct entity *e) {
         }
 
         // Realloc to a tempory pointer to avoid losing reference to original memory if realloc fails
-        struct entity *temp = realloc(em->entities, new_capacity * sizeof(struct entity));
+        struct entity **temp = realloc(em->entities, new_capacity * sizeof(struct entity));
 
         // Gracefully handle realloc failure and clean up new enitiy with warning
         if (temp == NULL) {
@@ -58,14 +58,14 @@ void add_entity(struct entity_manager *em, struct entity *e) {
             return;
         }
 
-        // Update em with new address (realloc handles copying data and cleaning up old memory)
+        // Update em with new address (realloc handles copying data and cleaning up old pointer)
         em->entities = temp;
         em->capacity = new_capacity;
         printf("Em capacity increased to %d\n", em->capacity);
     }
 
-    // Add new entity to the array and increment count
-    em->entities[em->count] = *e;
+    // Add pointer to new entity to em array and increment count
+    em->entities[em->count] = e;
     em->count++;
 }
 
