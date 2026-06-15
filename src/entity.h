@@ -30,3 +30,6 @@ void cleanup_entity_manager(struct entity_manager* em);
 // Entity functions
 struct entity* create_entity(entity_type type, int x, int y);
 void destroy_entity(struct entity* e);
+
+// Convenience functions
+void spawn_entity(entity_type type, int x, int y, struct entity_manager *em);
