@@ -100,27 +100,6 @@ static struct entity* get_next_free_slot(struct entity_manager* em) {
     return slot;
 }
 
-
-
-
-// Entity Functions
-
-static struct entity* create_entity(entity_type type, int x, int y) {
-
-    struct entity* e = malloc(sizeof(struct entity));
-    if (!e) {
-        fprintf(stderr, "Failed to allocate memory for entity\n");
-        return NULL;
-    }
-
-    e->id = rand(); // Assign random - Change later
-    e->x = x;
-    e->y = y;
-    e->type = type;
-
-    return e;
-}
-
 // Public Spawn Functions
 void spawn_enemy(int x, int y, int hp, int attack_power, int speed, struct entity_manager *em) {
     struct entity* e = get_next_free_slot(em);
