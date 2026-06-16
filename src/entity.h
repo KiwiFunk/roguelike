@@ -4,6 +4,11 @@ typedef enum {
     ENTITY_TYPE_ITEM
 } entity_type;
 
+typedef struct {
+    int id;
+    int index;                          // Current pos in the entity pool array
+} MapEntry;
+
 // Compiler should pad to 4 bytes for alignment, try to keep same size
 typedef struct {
     int hp;
@@ -42,6 +47,7 @@ struct entity_manager {
     int capacity;                       // Track current capacity of array
     int next_id;                        // Track next available ID for new entities
     struct entity *pool;                // Point to start of entity pool (dynamically allocated array)
+    MapEntry *lookup_table;             // Map from entity ID to index in pool for O(1) access
 };
 
 // Entity manager functions
