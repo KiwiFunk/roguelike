@@ -13,7 +13,7 @@ When an entity is removed, we swap it with the last entity in the array ([-1]) a
 
 This however gives us another challenge. When we perform a swap and compact, or we call realloc because we need more space, entities change their memory address. If other systems are holding pointers to those entities, we need a way to update those pointers to the new memory address.
 
-To do this, I will eventually implement watchers. Entities will track who is watching them, and using callbacks, they will notify their watchers when they are moved or removed. 
+To do this, I will eventually implement watchers. Entities will track who is watching them, and using callbacks, they will notify their watchers when they are moved or removed. Currently this is NOT implemented.
 
 ## Building
 To build the project, you will need gcc and make installed on your system. Once you have those, you can run the following commands:
