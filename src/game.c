@@ -38,7 +38,7 @@ void game_update(struct game_state *gamestate){
 void game_render(struct game_state *gamestate) {
     printf("Current frame: %d\n", gamestate->curr_frame);
 
-    for (size_t i = 0; i < gamestate->em->count; i++) {
+    for (int i = 0; i < gamestate->em->count; i++) {
         struct entity *e = &gamestate->em->entities[i];
 
         printf(
