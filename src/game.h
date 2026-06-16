@@ -1,3 +1,5 @@
+#include "entity.h"
+
 typedef enum {
     GAME_STATE_MENU,
     GAME_STATE_RUNNING,
@@ -5,14 +7,13 @@ typedef enum {
 } GameState;
 
 struct game_state {
-    GameState state;
-    int curr_frame;
+    GameState state;            // Current state of the game (menu, running, exit)
+    struct entity_manager *em;  // Handles all entites in game
+    int curr_frame;             // Current Frame (For testing only)
 };
 
 // Explicitly declare that the function takes no parameters in C
-void game_init(void);
-
-struct game_state* create_game_state(void);
+struct game_state* game_init(void);
 
 // read inputs
 
