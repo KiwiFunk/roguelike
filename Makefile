@@ -10,7 +10,7 @@ TARGET = $(BUILDDIR)/roguelike
 all: $(TARGET)
 
 # Link executable
-$(TARGET): $(BUILDDIR)/main.o $(BUILDDIR)/game.o
+$(TARGET): $(BUILDDIR)/main.o $(BUILDDIR)/game.o $(BUILDDIR)/entity.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 # Compile main.c
@@ -19,6 +19,10 @@ $(BUILDDIR)/main.o: $(SRCDIR)/main.c
 
 # Compile game.c
 $(BUILDDIR)/game.o: $(SRCDIR)/game.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Compile entity.c
+$(BUILDDIR)/entity.o: $(SRCDIR)/entity.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Run the game
