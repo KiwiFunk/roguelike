@@ -2,15 +2,12 @@
 #include <stdlib.h>
 #include  "game.h"
 
-struct game_state* game_init() {
+struct game_state* create_game_state() {
 
-    // Allocate memory for the game state
     struct game_state *state = malloc(sizeof(struct game_state));
 
-    // Check if malloc was successful
     if (state == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
-        // Return NULL to indicate failure to caller
         return NULL;
     }
 
@@ -22,8 +19,14 @@ struct game_state* game_init() {
     return state;
 }
 
+void game_init() {
+
+
+}
+
 void game_update(struct game_state *gamestate){
     gamestate->curr_frame++;
+    entity_update_all(gamestate->em);
 }
 
 void game_render(struct game_state *gamestate) {

@@ -10,7 +10,9 @@ struct game_state {
 };
 
 // Explicitly declare that the function takes no parameters in C
-struct game_state* game_init(void);
+void game_init(void);
+
+struct game_state* create_game_state(void);
 
 // read inputs
 
