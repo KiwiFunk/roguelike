@@ -48,6 +48,8 @@ struct entity_manager {
 struct entity_manager* init_entity_manager();
 void cleanup_entity_manager(struct entity_manager* em);
 
+void entity_update_all(struct entity_manager *em);
+
 // Entity functions
 void spawn_enemy(int x, int y, int hp, int attack_power, int speed, struct entity_manager *em);
 void spawn_item(int x, int y, int heal_amount, int is_key_item, struct entity_manager *em);

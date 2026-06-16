@@ -134,3 +134,10 @@ void spawn_player(int x, int y, int max_hp, int mana, struct entity_manager *em)
     e->data.player_data.max_hp = max_hp;
     e->data.player_data.mana = mana;
 }
+
+// Update Functions
+void entity_update_all(struct entity_manager *em) {
+    for (int i = 0; i < em->count; i++) {
+        struct entity *e = &em->entities[i];    // Dereference to get entity at index i
+        // Placeholder for entity-specific update logic    }
+}
