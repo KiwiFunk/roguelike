@@ -14,18 +14,25 @@ struct entity_manager* init_entity_manager() {
 
     em->count = 0;
     em->capacity = INITIAL_CAPACITY;
+    em->next_id = 1;
 
     // Allocate memory for entity array and set pointer
-    em->entities = malloc(INITIAL_CAPACITY * sizeof(struct entity *));
+    em->entities = malloc(INITIAL_CAPACITY * sizeof(struct entity));
+
     // If malloc fails, free em and return NULL
     if (!em->entities) {
         fprintf(stderr, "Failed to allocate memory for entity array\n");
         free(em);
         return NULL;
     }
+    return em;                  // Return memory address for entity manager (Don't dereference)
+}
 
-    // Return memory address for entity manager (Don't dereference)
-    return em;
+void cleanup_entity_manager(struct entity_manager* em) {
+    if (!em) return;
+
+    free(em->entities);         // Flat array, All entities are purged when freeing em->entities.
+    free(em);
 }
 
 static void add_entity(struct entity_manager *em, struct entity *e) {
@@ -71,26 +78,8 @@ static void add_entity(struct entity_manager *em, struct entity *e) {
     em->count++;
 }
 
-void cleanup_entity_manager(struct entity_manager* em) {
-
-    if(!em) {
-        fprintf(stderr, "Entity manager is NULL, nothing to clean up\n");
-        return;
-    }
-
-    // Clean up each entity belonging to the entity manager
-    for (int i = 0; i < em->count; i++) {
-        destroy_entity(em->entities[i]);    // Pointers can be called with array notation
-    }
-
-    free(em->entities);         // Free the array of entity pointers
-    free(em);                   // Free the entity manager itself
-    em = NULL;                  // Avoid dangling pointer
-}
-
 // Entity Functions
 
-// Internal base function, keep static (private)
 static struct entity* create_entity(entity_type type, int x, int y) {
 
     struct entity* e = malloc(sizeof(struct entity));
