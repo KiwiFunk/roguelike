@@ -75,6 +75,32 @@ void destroy_entity_at_index(struct entity_manager* em, int target) {
     em->count--;
 }
 
+// Spawning Logic
+
+static struct entity* get_next_free_slot(struct entity_manager* em) {
+
+    // Check if allocated capacity is sufficient, if not attempt to expand
+    if (em->count >= em->capacity) {
+        resize_entity_manager(em);
+    }
+
+    // Handle limit
+    if (em->count >= em->capacity) {
+        fprintf(stderr, "Error: Reached maximum entity capacity of %d\n", MAX_ENTITIES);
+        return NULL;
+    }
+
+    // Use pointer arithmetic to get address of next free slot and increment count to reserve it
+    struct entity* slot = &em->entities[em->count];
+    em->count++;
+
+    // Set baseline properties
+    slot->id = em->next_id++;
+
+    return slot;
+}
+
+
 
 
 // Entity Functions
@@ -95,60 +121,37 @@ static struct entity* create_entity(entity_type type, int x, int y) {
     return e;
 }
 
-static struct entity* create_enemy(int x, int y, int hp, int attack_power, int speed) {
-    struct entity* e = create_entity(ENTITY_TYPE_ENEMY, x, y);
-    if (!e) return NULL;
+// Public Spawn Functions
+void spawn_enemy(int x, int y, int hp, int attack_power, int speed, struct entity_manager *em) {
+    struct entity* e = get_next_free_slot(em);
+    if (!e) return;
 
+    e->type = ENTITY_TYPE_ENEMY;
+    e->x = x;
+    e->y = y;
     e->data.enemy_data.hp = hp;
     e->data.enemy_data.attack_power = attack_power;
     e->data.enemy_data.speed = speed;
-
-    return e;
-}
-
-static struct entity* create_item(int x, int y, int heal_amount, bool is_key_item) {
-    struct entity* e = create_entity(ENTITY_TYPE_ITEM, x, y);
-    if (!e) return NULL;
-
-    e->data.item_data.heal_amount = heal_amount;
-    e->data.item_data.is_key_item = is_key_item;
-
-    return e;
-}
-
-static struct entity* create_player(int x, int y, int max_hp, int mana) {
-    struct entity* e = create_entity(ENTITY_TYPE_PLAYER, x, y);
-    if (!e) return NULL;
-
-    e->data.player_data.max_hp = max_hp;
-    e->data.player_data.mana = mana;
-
-    return e;
-}
-
-void destroy_entity(struct entity *e) {
-    // Destroy entity e and free memory
-     if (e) {
-        free(e);
-    }
-     e = NULL; // Avoid dangling pointer
-}
-
-// Public Functions
-void spawn_enemy(int x, int y, int hp, int attack_power, int speed, struct entity_manager *em) {
-    struct entity* e = create_enemy(x, y, hp, attack_power, speed);
-    add_entity(em, e);
-    return;
 }
 
 void spawn_item(int x, int y, int heal_amount, bool is_key_item, struct entity_manager *em) {
-    struct entity* e = create_item(x, y, heal_amount, is_key_item);
-    add_entity(em, e);
-    return;
+    struct entity* e = get_next_free_slot(em);
+    if (!e) return;
+
+    e->type = ENTITY_TYPE_ITEM;
+    e->x = x;
+    e->y = y;
+    e->data.item_data.heal_amount = heal_amount;
+    e->data.item_data.is_key_item = is_key_item;
 }
 
 void spawn_player(int x, int y, int max_hp, int mana, struct entity_manager *em) {
-    struct entity* e = create_player(x, y, max_hp, mana);
-    add_entity(em, e);
-    return;
+    struct entity* e = get_next_free_slot(em);
+    if (!e) return;
+
+    e->type = ENTITY_TYPE_PLAYER;
+    e->x = x;
+    e->y = y;
+    e->data.player_data.max_hp = max_hp;
+    e->data.player_data.mana = mana;
 }
