@@ -52,8 +52,11 @@ void game_render(struct game_state *gamestate) {
 }
 
 void game_shutdown(struct game_state *gamestate) {
+    if (gamestate->em != NULL) {
+        cleanup_entity_manager(gamestate->em);
+        gamestate->em = NULL;
+    }
     free(gamestate);
-    gamestate = NULL;
     printf("Game shutdown successfully\n");
     return;
 }
