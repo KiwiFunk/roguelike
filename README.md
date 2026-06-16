@@ -15,6 +15,8 @@ This however gives us another challenge. When we perform a swap and compact, or 
 
 To do this, I will eventually implement watchers. Entities will track who is watching them, and using callbacks, they will notify their watchers when they are moved or removed. Currently this is NOT implemented.
 
+### World Generation
+
 ## Building
 To build the project, you will need gcc and make installed on your system. Once you have those, you can run the following commands:
 
