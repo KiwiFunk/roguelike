@@ -13,7 +13,7 @@ typedef struct {
 
 typedef struct {
     int heal_amount;
-    bool is_key_item;
+    int is_key_item;
 } ItemData;
 
 typedef struct {
@@ -50,6 +50,6 @@ void cleanup_entity_manager(struct entity_manager* em);
 
 // Entity functions
 void spawn_enemy(int x, int y, int hp, int attack_power, int speed, struct entity_manager *em);
-void spawn_item(int x, int y, int heal_amount, bool is_key_item, struct entity_manager *em);
+void spawn_item(int x, int y, int heal_amount, int is_key_item, struct entity_manager *em);
 void spawn_player(int x, int y, int max_hp, int mana, struct entity_manager *em);
 void destroy_entity_at_index(struct entity_manager* em, int target);

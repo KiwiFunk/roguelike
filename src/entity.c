@@ -113,7 +113,7 @@ void spawn_enemy(int x, int y, int hp, int attack_power, int speed, struct entit
     e->data.enemy_data.speed = speed;
 }
 
-void spawn_item(int x, int y, int heal_amount, bool is_key_item, struct entity_manager *em) {
+void spawn_item(int x, int y, int heal_amount, int is_key_item, struct entity_manager *em) {
     struct entity* e = get_next_free_slot(em);
     if (!e) return;
 
