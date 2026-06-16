@@ -13,7 +13,7 @@ int main()
         return 1;
     }
 
-    state->state = GAME_STATE_RUNNING;
+    game_start(state);      // Start the game and spawn initial entities
 
     for (int frame = 0; frame < 100; frame++) {
         game_update(state);

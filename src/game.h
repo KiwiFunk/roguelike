@@ -16,6 +16,7 @@ struct game_state {
 struct game_state* game_init(void);
 
 // read inputs
+void game_start(struct game_state *state);
 
 void game_update(struct game_state *state);
 
