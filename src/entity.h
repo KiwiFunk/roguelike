@@ -40,7 +40,8 @@ struct entity {
 struct entity_manager {
     int count;                          // Track current number of entities
     int capacity;                       // Track current capacity of array
-    struct entity **entities;           // Point to dynamically allocated array of entity pointers
+    int next_id;                        // Track next available ID for new entities
+    struct entity *pool;                // Point to start of entity pool (dynamically allocated array)
 };
 
 // Entity manager functions
