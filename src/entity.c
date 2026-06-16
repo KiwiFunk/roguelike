@@ -35,6 +35,47 @@ void cleanup_entity_manager(struct entity_manager* em) {
     free(em);
 }
 
+// Mem Pipeline
+
+static void resize_entity_manager(struct entity_manager* em) {
+    if (em->capacity >= MAX_ENTITIES) {
+        fprintf(stderr, "Warning: Reached hard maximum entity cap of %d\n", MAX_ENTITIES);
+        return;
+    }
+
+    int new_capacity = em->capacity * 2;
+    if (new_capacity > MAX_ENTITIES) {
+        new_capacity = MAX_ENTITIES;
+    }
+
+    // realloc to a tempory pointer to avoid losing reference to original memory if realloc fails
+    struct entity *temp = realloc(em->entities, new_capacity * sizeof(struct entity));
+    if (temp == NULL) {
+        fprintf(stderr, "Critical: Failed to reallocate entity pool storage\n");
+        return;
+    }
+
+    // Update em with new address (realloc handles moving data and cleaning up old pointer)
+    em->entities = temp;
+    em->capacity = new_capacity;
+    printf("Entity manager expanded capacity to %d\n", em->capacity);
+}
+
+void destroy_entity_at_index(struct entity_manager* em, int target) {
+    if (!em || target < 0 || target >= em->count) return;
+
+    int last_index = em->count - 1;
+
+    // Swap and compact
+    if (target != last_index) {
+        em->entities[target] = em->entities[last_index];
+    }
+
+    // Decrement count to 'remove' last entiry from pool. This will be overwritten on next add_entity call.
+    em->count--;
+}
+
+
 static void add_entity(struct entity_manager *em, struct entity *e) {
     // Null checks
     if (em == NULL || e == NULL) {
@@ -67,7 +108,7 @@ static void add_entity(struct entity_manager *em, struct entity *e) {
             return;
         }
 
-        // Update em with new address (realloc handles copying data and cleaning up old pointer)
+
         em->entities = temp;
         em->capacity = new_capacity;
         printf("Em capacity increased to %d\n", em->capacity);
