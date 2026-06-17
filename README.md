@@ -16,6 +16,10 @@ This however gives us another challenge. When we perform a swap and compact, or 
 To do this, I will eventually implement watchers. Entities will track who is watching them, and using callbacks, they will notify their watchers when they are moved or removed. Currently this is NOT implemented.
 
 ### World Generation
+To generate dungeons, we use a flattened 1D array. This means we can avoid hardcoding width and height at compile time, and gives a much more efficient and flexible structure to iterate over. We treat this 1D array as a 2D array using the following math:
+```
+index = (y * width) + x
+```
 
 ## Building
 To build the project, you will need gcc and make installed on your system. Once you have those, you can run the following commands:

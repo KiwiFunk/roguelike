@@ -6,7 +6,7 @@ typedef enum {
 
 struct world {
     int width, height;
-    tile_type **tiles;      // 2D Array [y][x]
+    tile_type *tiles;      // i = (y * width) + x
 };
 
 struct world* world_create(int w, int h);
