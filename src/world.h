@@ -6,7 +6,14 @@ typedef enum {
 
 struct world {
     int width, height;
-    tile_type *tiles;      // i = (y * width) + x
+    tile_type *tiles;       // i = (y * width) + x
+};
+
+struct room {
+    int x, y;               // Top-left corner of the room
+    int width, height;      // Dimensions of the room
+    struct room *left;      // Pointers to left and right child rooms for BSP tree structure
+    struct room *right;
 };
 
 struct world* world_create(int w, int h);
