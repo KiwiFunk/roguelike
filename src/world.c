@@ -51,3 +51,30 @@ void world_set_tile(struct world* w, int x, int y, tile_type type) {
     w->tiles[(y * w->width) + x] = type;
     return;
 }
+
+void world_is_walkable(){
+    // Check if the tile at (x, y) is walkable (i.e., not a wall)
+    // Return true if walkable, false otherwise
+}
+
+// Binary Space Partitioning (BSP) algorithm to split the world into rooms and corridors.
+
+// Take in a rectangle struct (w x h) the depth, a max depth and pointer to a world struct.
+
+// Break into rooms
+
+// Call recursively until max depth is reached
+
+// Connect rooms with corridors
+
+// Attempt to update the world struct with the new rooms and corridors
+
+void bsp_split(int w, int h, int depth, int max_depth) {
+    if (depth == 0) {
+        // Handle case once max depth is reached, create a room in the world struct
+        return;
+    }
+
+    // Main logic
+    return bsp_split(w / 2, h / 2, depth - 1, max_depth);
+}
