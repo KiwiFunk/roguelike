@@ -74,6 +74,8 @@ void bsp_split(struct room *r, int curr_depth, int max_depth) {
         fprintf(stderr, "Failed to allocate memory for rooms\nAbort at iteration depth %d\n", depth);
         free(room_a);
         free(room_b);
+        r->left = NULL;
+        r->right = NULL;
         return;
     }
 
