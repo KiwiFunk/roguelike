@@ -58,23 +58,39 @@ void world_is_walkable(){
 }
 
 // Binary Space Partitioning (BSP) algorithm to split the world into rooms and corridors.
-
-// Take in a rectangle struct (w x h) the depth, a max depth and pointer to a world struct.
-
-// Break into rooms
-
-// Call recursively until max depth is reached
-
-// Connect rooms with corridors
-
-// Attempt to update the world struct with the new rooms and corridors
-
-void bsp_split(int w, int h, int depth, int max_depth) {
+// Room Node to traverse, depth in the bsp tree, and max depth to stop recursion
+void bsp_split(struct room *r, int depth, int max_depth) {
     if (depth == 0) {
-        // Handle case once max depth is reached, create a room in the world struct
         return;
     }
 
-    // Main logic
-    return bsp_split(w / 2, h / 2, depth - 1, max_depth);
+    // Split the room into two smaller rooms (left and right)
+    struct room *room_a = malloc(sizeof(struct room));
+    struct room *room_b = malloc(sizeof(struct room));
+
+    if (!room_a || !room_b) {
+        fprintf(stderr, "Failed to allocate memory for rooms\nAbort at iteration depth %d\n", depth);
+        free(room_a);
+        free(room_b);
+        return;
+    }
+
+    // Split the room horizontally or vertically based on dimensions
+    room_a->x = r->x;
+    room_a->y = r->y;
+    room_a->width = r-> width > r->height ? r->width / 2 : r->width;
+    room_a->height = r->height > r->width ? r->height / 2 : r->height;
+
+    room_b->x = r->x + room_a->width;
+    room_b->y = r->y + room_a->height;
+    room_b->width = r->width - room_a->width;
+    room_b->height = r->height - room_a->height;
+
+    // Assign to left and right child pointers of the room struct
+    r->left = room_a;
+    r->right = room_b;
+
+    // Recursively traverse the BSP tree
+    bsp_split(r->left, depth - 1, max_depth);
+    bsp_split(r->right, depth - 1, max_depth);
 }
