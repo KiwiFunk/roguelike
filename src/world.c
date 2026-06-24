@@ -59,8 +59,8 @@ void world_is_walkable(){
 
 // Binary Space Partitioning (BSP) algorithm to split the world into rooms and corridors.
 // Room Node to traverse, depth in the bsp tree, and max depth to stop recursion
-void bsp_split(struct room *r, int depth, int max_depth) {
-    if (depth == 0) {
+void bsp_split(struct room *r, int curr_depth, int max_depth) {
+    if (curr_depth >= max_depth) {
         r->left = NULL;
         r->right = NULL;
         return;
