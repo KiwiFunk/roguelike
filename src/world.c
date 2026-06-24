@@ -66,6 +66,15 @@ void bsp_split(struct room *r, int curr_depth, int max_depth) {
         return;
     }
 
+    int split_vertical = r->width > r->height;
+
+    // Minimum size check
+    if ((split_vertical && r->width < 4) || (!split_vertical && r->height < 4)) {
+        r->left = NULL;
+        r->right = NULL;
+        return;
+    }
+
     // Handle memory allocation
     struct room *room_a = malloc(sizeof(struct room));
     struct room *room_b = malloc(sizeof(struct room));
@@ -80,8 +89,6 @@ void bsp_split(struct room *r, int curr_depth, int max_depth) {
     }
 
     // Handle splitting logic
-    int split_vertical = r->width > r->height;
-
     if (split_vertical == 1) {
         // Split left/right (X changes)
         int split_point = r->width / 2;
