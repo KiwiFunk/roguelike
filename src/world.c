@@ -66,7 +66,7 @@ void bsp_split(struct room *r, int curr_depth, int max_depth) {
         return;
     }
 
-    // Split the room into two smaller rooms (left and right)
+    // Handle memory allocation
     struct room *room_a = malloc(sizeof(struct room));
     struct room *room_b = malloc(sizeof(struct room));
 
@@ -79,22 +79,41 @@ void bsp_split(struct room *r, int curr_depth, int max_depth) {
         return;
     }
 
-    // Split the room horizontally or vertically based on dimensions
-    room_a->x = r->x;
-    room_a->y = r->y;
-    room_a->width = r-> width > r->height ? r->width / 2 : r->width;
-    room_a->height = r->height > r->width ? r->height / 2 : r->height;
+    // Handle splitting logic
+    int split_vertical = r->width > r->height;
 
-    room_b->x = r->x + room_a->width;
-    room_b->y = r->y + room_a->height;
-    room_b->width = r->width - room_a->width;
-    room_b->height = r->height - room_a->height;
+    if (split_vertical == 1) {
+        // Split left/right (X changes)
+        int split_point = r->width / 2;
 
-    // Assign to left and right child pointers of the room struct
+        room_a->x = r->x;
+        room_a->y = r->y;
+        room_a->width = split_point;
+        room_a->height = r->height;
+
+        room_b->x = r->x + split_point;
+        room_b->y = r->y;
+        room_b->width = r->width - split_point;
+        room_b->height = r->height;
+    } else {
+        // Split top/bottom (Y changes)
+        int split_point = r->height / 2;
+
+        room_a->x = r->x;
+        room_a->y = r->y;
+        room_a->width = r->width;
+        room_a->height = split_point;
+
+        room_b->x = r->x;
+        room_b->y = r->y + split_point;
+        room_b->width = r->width;
+        room_b->height = r->height - split_point;
+    }
+
     r->left = room_a;
     r->right = room_b;
 
-    // Recursively traverse the BSP tree
-    bsp_split(r->left, depth - 1, max_depth);
-    bsp_split(r->right, depth - 1, max_depth);
+    // Recursively call func
+    bsp_split(r->left, curr_depth + 1, max_depth);
+    bsp_split(r->right, curr_depth + 1, max_depth);
 }
